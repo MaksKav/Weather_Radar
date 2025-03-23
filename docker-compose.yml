@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: weather_radar
+      POSTGRES_USER: maxkavun
+      POSTGRES_PASSWORD: SUper_parol1
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - pgdata:/var/lib/postgresql/data
+
+
+  flyway:
+    image: flyway/flyway:latest
+    container_name: flyway_migrations
+    depends_on:
+      - postgres
+    volumes:
+      - ./migrations:/flyway/sql
+    command: -url=jdbc:postgresql://postgres_db:5432/weather_radar -user=maxkavun -password=SUper_parol1 migrate
+
+volumes:
+  pgdata:
