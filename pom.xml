@@ -15,8 +15,6 @@
         <spring.version>6.2.5</spring.version>
         <junit.version>5.13.0-M1</junit.version>
         <jackson.version>2.18.3</jackson.version>
-        <flyway.user>maxkavun</flyway.user>
-        <flyway.password>SUper_parol1</flyway.password>
     </properties>
 
     <dependencies>
@@ -109,6 +107,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>11.4.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webflux</artifactId>
             <version>${spring.version}</version>
@@ -147,8 +151,8 @@
                 <version>11.4.1</version>
                 <configuration>
                     <url>jdbc:postgresql://localhost:5434/weather_radar</url>
-                    <user>${flyway.user}</user>
-                    <password>${flyway.password}</password>
+                    <user>maxkavun</user>
+                    <password>SUper_parol1</password>
                     <schemas>
                         <schema>public</schema>
                     </schemas>
