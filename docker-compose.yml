@@ -13,15 +13,5 @@ services:
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
       - pgdata:/var/lib/postgresql/data
 
-
-  flyway:
-    image: flyway/flyway:latest
-    container_name: flyway_migrations
-    depends_on:
-      - postgres
-    volumes:
-      - ./migrations:/flyway/sql
-    command: -url=jdbc:postgresql://postgres_db:5432/weather_radar -user=maxkavun -password=SUper_parol1 migrate
-
 volumes:
   pgdata:

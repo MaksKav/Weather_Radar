@@ -15,6 +15,8 @@
         <spring.version>6.2.5</spring.version>
         <junit.version>5.13.0-M1</junit.version>
         <jackson.version>2.18.3</jackson.version>
+        <flyway.user>maxkavun</flyway.user>
+        <flyway.password>SUper_parol1</flyway.password>
     </properties>
 
     <dependencies>
@@ -136,6 +138,23 @@
                 <version>3.3.2</version>
                 <configuration>
                     <warName>${project.artifactId}</warName>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>11.4.1</version>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5434/weather_radar</url>
+                    <user>${flyway.user}</user>
+                    <password>${flyway.password}</password>
+                    <schemas>
+                        <schema>public</schema>
+                    </schemas>
+                    <locations>
+                        <location>filesystem:src/main/resources/db/migration</location>
+                    </locations>
                 </configuration>
             </plugin>
         </plugins>
