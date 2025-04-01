@@ -15,17 +15,22 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class Location extends AbstractEntity<Long> {
 
-    @Column(name = "name" , nullable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long id;
+
+    @Column(name = "name", nullable = false)
     private String locationName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(precision = 9, scale = 6 , nullable = false)
+    @Column(precision = 9, scale = 6, nullable = false)
     private BigDecimal latitude;
 
-    @Column(precision = 9, scale = 6 , nullable = false)
+    @Column(precision = 9, scale = 6, nullable = false)
     private BigDecimal longitude;
 
 }

@@ -15,6 +15,10 @@ import java.util.UUID;
 @Builder
 public class Session extends AbstractEntity<UUID> {
 
+    @Id
+    @Column
+    private UUID id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id" , nullable = false)
     private User user;
