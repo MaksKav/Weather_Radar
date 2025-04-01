@@ -13,12 +13,7 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Location {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Long id;
+public class Location extends AbstractEntity<Long> {
 
     @Column(name = "name" , nullable = false)
     private String locationName;
