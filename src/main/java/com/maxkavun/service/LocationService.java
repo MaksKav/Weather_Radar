@@ -82,8 +82,6 @@ public class LocationService {
         try {
             var user = getUserBySession(sessionStringUUID);
             var userLocation = locationRepository.findByUserAndLatitudeAndLongitude(user, lat, lon);
-            log.info("ВОТ ТАКАЯ ВОТ ЛОКАЦИЯ ЮЗЕРА: {}", userLocation); //TODO pum pum pum ... ne rabotaet
-            log.info("ВОТ ТАКАЯ lat: {}, lon: {}", lat, lon);
             if (userLocation.isEmpty()) {
                 log.warn("Location does not exist for user: {}", user.getLogin());
                 throw new LocationServiceException("Failed to delete location: The location does not exist for the user.");
