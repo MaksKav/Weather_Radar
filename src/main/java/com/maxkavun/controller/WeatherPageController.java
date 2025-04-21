@@ -2,7 +2,6 @@ package com.maxkavun.controller;
 
 import com.maxkavun.dto.CitySearchForm;
 import com.maxkavun.service.LocationService;
-import com.maxkavun.service.LoginService;
 import com.maxkavun.service.client.OpenWeatherClient;
 import com.maxkavun.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,14 +16,12 @@ import java.math.BigDecimal;
 
 @Slf4j
 @Controller
-public class WeatherController {
+public class WeatherPageController {
 
-    private final LoginService loginService;
     private final OpenWeatherClient openWeatherClient;
     private final LocationService locationService;
 
-    public WeatherController(LoginService loginService, OpenWeatherClient openWeatherClient, LocationService locationService) {
-        this.loginService = loginService;
+    public WeatherPageController(OpenWeatherClient openWeatherClient, LocationService locationService) {
         this.openWeatherClient = openWeatherClient;
         this.locationService = locationService;
     }
