@@ -2,10 +2,10 @@ package com.maxkavun.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
+@ToString
 @Getter
 @Setter
 @Builder
