@@ -1,6 +1,7 @@
 package com.maxkavun.controller;
 
 import com.maxkavun.dto.UserLoginDto;
+import com.maxkavun.exception.IncorrectPasswordException;
 import com.maxkavun.service.AuthorizationService;
 import com.maxkavun.util.CookieUtil;
 import jakarta.servlet.http.Cookie;
@@ -19,7 +20,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 
-@Slf4j
+
 @Controller
 public class AuthorizationController {
 
@@ -42,20 +43,25 @@ public class AuthorizationController {
             return "login";
         }
 
-        var sessionID = authorizationService.saveSessionIfUserAuthorized(userLoginDto.getUsername(), userLoginDto.getPassword());
-        if (sessionID.isPresent()) {
+        try {
+            var sessionID = authorizationService.saveSessionIfUserAuthorized(userLoginDto.getUsername(), userLoginDto.getPassword());
+            if (sessionID.isPresent()) {
 
-            var sessionDto = authorizationService.getSessionDto(sessionID.get());
-            var sessionExpirationTime = sessionDto.expiresAt();
-            long maxTime = Duration.between(LocalDateTime.now(), sessionExpirationTime).getSeconds();
+                var sessionDto = authorizationService.getSessionDto(sessionID.get());
+                var sessionExpirationTime = sessionDto.expiresAt();
+                long maxTime = Duration.between(LocalDateTime.now(), sessionExpirationTime).getSeconds();
 
-            Cookie cookie = new Cookie("CUSTOM_SESSION_ID", sessionID.get().toString());
-            cookie.setHttpOnly(true);
-            cookie.setPath("/");
-            cookie.setMaxAge((int) maxTime);
-            response.addCookie(cookie);
+                Cookie cookie = new Cookie("CUSTOM_SESSION_ID", sessionID.get().toString());
+                cookie.setHttpOnly(true);
+                cookie.setPath("/");
+                cookie.setMaxAge((int) maxTime);
+                response.addCookie(cookie);
 
-            return "redirect:/home";
+                return "redirect:/home";
+            }
+        }catch (IncorrectPasswordException e ){
+            bindingResult.rejectValue("password", "password.incorrect" , "Incorrect password");
+            return "login";
         }
         return "redirect:/";
     }
