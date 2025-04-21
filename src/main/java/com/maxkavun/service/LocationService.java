@@ -1,7 +1,8 @@
 package com.maxkavun.service;
 
 import com.maxkavun.dto.LocationWithWeatherDto;
-import com.maxkavun.dto.UserLocationsDto;
+import com.maxkavun.dto.UserLocationsWithInfoDto;
+import com.maxkavun.dto.UserLocationsWithWeatherDto;
 import com.maxkavun.entity.Location;
 import com.maxkavun.entity.Session;
 import com.maxkavun.entity.User;
@@ -35,13 +36,27 @@ public class LocationService {
         this.sessionRepository = sessionRepository;
     }
 
+
     @Transactional
-    public UserLocationsDto getUserWithLocations(String sessionStringUUID) {
+    public UserLocationsWithWeatherDto getUserWithLocations(String sessionStringUUID) {
         try {
             var user = getUserBySession(sessionStringUUID);
             var userLocations = locationRepository.findAllUserLocations(user);
             return enrichLocationsWithWeather(user.getLogin(), userLocations);
         } catch (RepositoryException | HttpClientException | SessionNotFoundException e) {
+            log.error("Error while getting all user locations with sessionUUID: {}", sessionStringUUID, e);
+            throw new LocationServiceException("Error while getting all user locations", e);
+        }
+    }
+
+
+    @Transactional
+    public UserLocationsWithInfoDto getUserWithLocationsWithInfo(String sessionStringUUID , String cityName) {
+        try{
+            var user = getUserBySession(sessionStringUUID);
+            var citiesList = openWeatherClient.getLocationsByCityName(cityName);
+            return new UserLocationsWithInfoDto(user.getLogin() , citiesList);
+        } catch (HttpClientException | SessionNotFoundException e ){
             log.error("Error while getting all user locations with sessionUUID: {}", sessionStringUUID, e);
             throw new LocationServiceException("Error while getting all user locations", e);
         }
@@ -97,7 +112,7 @@ public class LocationService {
     }
 
 
-    private UserLocationsDto enrichLocationsWithWeather(String username, List<Location> locations) {
+    private UserLocationsWithWeatherDto enrichLocationsWithWeather(String username, List<Location> locations) {
         List<LocationWithWeatherDto> result = new ArrayList<>();
         for (Location location : locations) {
             var loc = openWeatherClient.getLocationByCoordinates(location.getLatitude(), location.getLongitude());
@@ -108,8 +123,9 @@ public class LocationService {
             }
 
         }
-        return new UserLocationsDto(username, result);
+        return new UserLocationsWithWeatherDto(username, result);
     }
+
 
     private Session getSession(String sessionStringUUID) {
         UUID sessionUUID = UUID.fromString(sessionStringUUID);
@@ -120,6 +136,7 @@ public class LocationService {
         }
         throw new SessionNotFoundException("Session with UUID: " + sessionStringUUID + " not found");
     }
+
 
     private User getUserBySession(String sessionStringUUID) {
         var session = getSession(sessionStringUUID);
