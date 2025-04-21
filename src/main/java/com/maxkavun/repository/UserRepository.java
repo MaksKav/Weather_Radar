@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -18,7 +17,6 @@ public class UserRepository extends AbstractHibernateRepository<User, Long> {
         super(User.class, sessionFactory);
     }
 
-    @Transactional(readOnly = true)
     public Optional<User> findByUsername(String username) {
         try {
             String usernameForQuery = username.toLowerCase();
