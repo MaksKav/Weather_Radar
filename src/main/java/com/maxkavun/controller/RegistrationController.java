@@ -3,6 +3,7 @@ package com.maxkavun.controller;
 import com.maxkavun.dto.UserRegistrationDto;
 import com.maxkavun.exception.RegistrationServiceException;
 import com.maxkavun.exception.RepositoryException;
+import com.maxkavun.exception.UserAlreadyExistsException;
 import com.maxkavun.service.RegistrationService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -43,16 +44,14 @@ public class RegistrationController {
         try {
             boolean isUserNotExists = registrationService.saveUserIfNotExists(userRegistrationDto.getUsername(), userRegistrationDto.getPassword());
             if (isUserNotExists) {
-                log.info("User: {} successfully saved in the DB , return to login" , userRegistrationDto.getUsername());
+                log.info("User: {} successfully saved in the DB , return to login", userRegistrationDto.getUsername());
                 return "redirect:/";
-            } else {
-                bindingResult.rejectValue("repeatPassword", "error.userExists", "User already exists , please return to login page");
-                return "registration";
             }
-        } catch (RepositoryException | RegistrationServiceException exception) {
-            log.error("Error occurred during user registration check. Username: {}", userRegistrationDto.getUsername(), exception);
-            return "error";
+        } catch (UserAlreadyExistsException exception) {
+            bindingResult.rejectValue("repeatPassword", "error.userExists", "User already exists , please return to login page");
+            return "registration";
         }
 
+        return "error";
     }
 }
