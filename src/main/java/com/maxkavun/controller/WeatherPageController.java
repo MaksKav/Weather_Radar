@@ -18,11 +18,9 @@ import java.math.BigDecimal;
 @Controller
 public class WeatherPageController {
 
-    private final OpenWeatherClient openWeatherClient;
     private final LocationService locationService;
 
-    public WeatherPageController(OpenWeatherClient openWeatherClient, LocationService locationService) {
-        this.openWeatherClient = openWeatherClient;
+    public WeatherPageController(LocationService locationService) {
         this.locationService = locationService;
     }
 
@@ -40,13 +38,15 @@ public class WeatherPageController {
 
 
     @GetMapping("/search")
-    public String searchLocationByName(@Valid @ModelAttribute("cityNameForm") CitySearchForm cityName, BindingResult bindingResult, Model model) {
+    public String searchLocationByName(@Valid @ModelAttribute("cityNameForm") CitySearchForm cityName, BindingResult bindingResult, Model model, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "home";
         }
 
-        var citiesList = openWeatherClient.getLocationsByCityName(cityName.getCityName());
-        model.addAttribute("citiesList", citiesList);
+        var sessionId = CookieUtil.getSessionIdFromCookie(request);
+        var userWithCitiesList = locationService.getUserWithLocationsWithInfo(sessionId, cityName.getCityName());
+        model.addAttribute("user", userWithCitiesList.username());
+        model.addAttribute("citiesList", userWithCitiesList.locations());
         model.addAttribute("cityNameForm", new CitySearchForm());
         return "search-page";
     }
