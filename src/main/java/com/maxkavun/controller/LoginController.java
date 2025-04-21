@@ -27,7 +27,7 @@ public class LoginController {
     public LoginController(LoginService loginService) {
         this.loginService = loginService;
     }
-    //TODO валидация логина , если вписать логин и поставить пробел - ОШИБКА
+
     @GetMapping("/")
     public String loginPage(Model model) {
         model.addAttribute("userLoginDto", new UserLoginDto());
@@ -35,7 +35,7 @@ public class LoginController {
     }
 
     @PostMapping("/processingLogin")
-    public String processLogin(@Valid @ModelAttribute("userLoginDto") UserLoginDto userLoginDto, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+    public String processLogin(@Valid @ModelAttribute("userLoginDto") UserLoginDto userLoginDto, BindingResult bindingResult,  HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             return "login";
         }
