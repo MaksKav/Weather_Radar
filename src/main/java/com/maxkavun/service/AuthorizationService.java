@@ -47,7 +47,12 @@ public class AuthorizationService {
     @Transactional
     public Optional<UUID> saveSessionIfUserAuthorized(String username, String password) {
         try {
-            return userRepository.findByUsername(username).map(user -> {
+            var userOpt = userRepository.findByUsername(username);
+            if (userOpt.isEmpty()) {
+                throw new UserNotFoundException("User not found");
+            }
+
+            return userOpt.map(user -> {
                 if (!PasswordUtil.checkPassword(password, user.getPassword())) {
                     log.warn("Incorrect password for user {}", username);
                     throw new IncorrectPasswordException("Password is not correct");
