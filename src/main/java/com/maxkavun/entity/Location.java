@@ -2,8 +2,6 @@ package com.maxkavun.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-
 import java.math.BigDecimal;
 
 @Entity
@@ -11,6 +9,7 @@ import java.math.BigDecimal;
 @Builder
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Location extends AbstractEntity<Long> {
