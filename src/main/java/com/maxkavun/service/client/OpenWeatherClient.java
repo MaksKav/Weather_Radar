@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxkavun.dto.LocationInfoDto;
 import com.maxkavun.dto.LocationWithWeatherDto;
 import com.maxkavun.exception.HttpClientException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,7 @@ public class OpenWeatherClient {
 
     private final ObjectMapper objectMapper;
 
-    @Autowired
+
     public OpenWeatherClient(ObjectMapper objectMapper) {
         this.httpClient = HttpClient.newHttpClient();
         this.objectMapper = objectMapper;
@@ -67,7 +66,7 @@ public class OpenWeatherClient {
             HttpResponse<String> response = httpClient.send(request , HttpResponse.BodyHandlers.ofString());
 
             return Optional.of(objectMapper.readValue(response.body(), LocationWithWeatherDto.class));
-        } catch (Exception e) { //TODO отловить что то другое а не просто exception
+        } catch (Exception e) {
             throw  new HttpClientException("Error getting location by coordinates from OpenWeather API", e);
         }
     }
