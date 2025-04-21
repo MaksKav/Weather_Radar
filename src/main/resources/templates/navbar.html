@@ -1,0 +1,15 @@
+<!-- navbar.html -->
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <a class="navbar-brand" th:href="@{/home}">
+            <img src="images/weather-logo.png" alt="logo" width="40" height="30" class="d-inline-block align-text-top">
+            Weather Radar
+        </a>
+
+        <div class="d-flex align-items-center">
+            <span class="badge bg-light text-dark" style="font-size: 1.2rem; margin-right: 10px; font-weight: lighter"
+                  th:text="${user}"></span>
+            <button type="button" class="btn btn-outline-danger">Sign out</button>
+        </div>
+    </div>
+</nav>

@@ -26,7 +26,7 @@
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" id="username" th:field="*{username}">
-                        <div th:if="${#fields.hasErrors('username')}" class="alert alert-danger" role="alert">
+                        <div th:if="${#fields.hasErrors('username')}" class="alert alert-danger p-0" role="alert">
                             <ul>
                                 <li th:each="err : ${#fields.errors('username')}" th:text="${err}"></li>
                             </ul>
@@ -36,7 +36,7 @@
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" th:field="*{password}">
-                        <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger" role="alert">
+                        <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger p-0" role="alert">
                             <ul>
                                 <li th:each="err : ${#fields.errors('password')}" th:text="${err}"></li>
                             </ul>
@@ -46,7 +46,7 @@
                     <div class="mb-3">
                         <label for="repeatPassword" class="form-label">Repeat password</label>
                         <input type="password" class="form-control" id="repeatPassword" th:field="*{repeatPassword}">
-                        <div th:if="${#fields.hasErrors('repeatPassword')}" class="alert alert-danger" role="alert">
+                        <div th:if="${#fields.hasErrors('repeatPassword')}" class="alert alert-danger p-0" role="alert">
                             <ul>
                                 <li th:each="err : ${#fields.errors('repeatPassword')}" th:text="${err}"></li>
                             </ul>
