@@ -33,7 +33,7 @@ public class RegistrationService {
                 log.info("Saved user successfully : {}", username);
                 return true;
             }
-        } catch (UserPersistenceException | RepositoryException exception) {
+        } catch (IncorrectUserLoginException | RepositoryException exception) {
             log.error("Error while saving user: {}", username);
             throw new RegistrationServiceException("Failed to save new user", exception);
         }
