@@ -39,7 +39,7 @@ public class AuthorizationService {
             return sessionId;
         } catch (RepositoryException e) {
             log.error("Error while creating session for user: {}", user.getLogin(), e);
-            throw new LoginServiceException("Failed to create session", e);
+            throw new AuthorizationServiceException("Failed to create session", e);
         }
     }
 
@@ -56,7 +56,7 @@ public class AuthorizationService {
             });
         } catch (RepositoryException e) {
             log.error("Database error while authorizing user {}", username, e);
-            throw new LoginServiceException("Database error occurred", e);
+            throw new AuthorizationServiceException("Database error occurred", e);
         }
     }
 
@@ -76,7 +76,7 @@ public class AuthorizationService {
                     .orElseThrow(() -> new SessionNotFoundException("Session not found with id: " + sessionId));
         } catch (RepositoryException e) {
             log.error("Database error while finding session with id: {}", sessionId);
-            throw new LoginServiceException("Database error occurred", e);
+            throw new AuthorizationServiceException("Database error occurred", e);
         }
     }
 
