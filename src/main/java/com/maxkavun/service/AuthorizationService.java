@@ -17,12 +17,12 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class LoginService {
+public class AuthorizationService {
 
     private final UserRepository userRepository;
     private final SessionRepository sessionRepository;
 
-    public LoginService(UserRepository userRepository, SessionRepository sessionRepository) {
+    public AuthorizationService(UserRepository userRepository, SessionRepository sessionRepository) {
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
     }
@@ -61,7 +61,7 @@ public class LoginService {
     }
 
 
-    @Transactional(readOnly = true)   // TODO  это точно должно быть в этом сервисе ? возможно нужно создать сервис дял сессий
+    @Transactional(readOnly = true)
     public boolean isSessionValid(String sessionId) {
         UUID sessionUuid = UUID.fromString(sessionId);
         return sessionRepository.findById(sessionUuid).map(session -> session.getExpiresAt().isAfter(LocalDateTime.now())).orElse(false);
@@ -78,5 +78,17 @@ public class LoginService {
             log.error("Database error while finding session with id: {}", sessionId);
             throw new LoginServiceException("Database error occurred", e);
         }
+    }
+
+
+    @Transactional()
+    public void changeExpireTimeInSession(String sessionId, LocalDateTime now) {
+        UUID sessionUuid = UUID.fromString(sessionId);
+
+        var sessionOpt = sessionRepository.findById(sessionUuid);
+        sessionOpt.ifPresent(session -> {
+            session.setExpiresAt(now);
+            sessionRepository.save(session);
+        });
     }
 }
