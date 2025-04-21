@@ -1,6 +1,6 @@
 package com.maxkavun.interceptor;
 
-import com.maxkavun.service.LoginService;
+import com.maxkavun.service.AuthorizationService;
 import com.maxkavun.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,10 +10,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class SessionInterceptor implements HandlerInterceptor {
 
-    private final LoginService loginService;
+    private final AuthorizationService authorizationService;
 
-    public SessionInterceptor(LoginService loginService) {
-        this.loginService = loginService;
+    public SessionInterceptor(AuthorizationService authorizationService) {
+        this.authorizationService = authorizationService;
     }
 
     @Override
@@ -21,13 +21,13 @@ public class SessionInterceptor implements HandlerInterceptor {
         String sessionId = CookieUtil.getSessionIdFromCookie(request);
         String requestUri = request.getRequestURI();
 
-        if (sessionId != null && loginService.isSessionValid(sessionId) &&
+        if (sessionId != null && authorizationService.isSessionValid(sessionId) &&
             (requestUri.equals("/") || requestUri.equals("/registration"))) {
             response.sendRedirect(request.getContextPath() + "/home");
             return false;
         }
 
-        if (sessionId != null && loginService.isSessionValid(sessionId)) {
+        if (sessionId != null && authorizationService.isSessionValid(sessionId)) {
             return true;
         } else {
             response.sendRedirect(request.getContextPath() + "/");
