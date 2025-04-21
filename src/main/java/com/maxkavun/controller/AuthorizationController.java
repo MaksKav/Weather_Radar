@@ -1,7 +1,8 @@
 package com.maxkavun.controller;
 
 import com.maxkavun.dto.UserLoginDto;
-import com.maxkavun.service.LoginService;
+import com.maxkavun.service.AuthorizationService;
+import com.maxkavun.util.CookieUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,12 +21,12 @@ import java.time.LocalDateTime;
 
 @Slf4j
 @Controller
-public class LoginController {
+public class AuthorizationController {
 
-    private final LoginService loginService;
+    private final AuthorizationService authorizationService;
 
-    public LoginController(LoginService loginService) {
-        this.loginService = loginService;
+    public AuthorizationController(AuthorizationService authorizationService) {
+        this.authorizationService = authorizationService;
     }
 
     @GetMapping("/")
@@ -34,16 +35,17 @@ public class LoginController {
         return "login";
     }
 
+
     @PostMapping("/processingLogin")
     public String processLogin(@Valid @ModelAttribute("userLoginDto") UserLoginDto userLoginDto, BindingResult bindingResult,  HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             return "login";
         }
 
-        var sessionID = loginService.saveSessionIfUserAuthorized(userLoginDto.getUsername(), userLoginDto.getPassword());
+        var sessionID = authorizationService.saveSessionIfUserAuthorized(userLoginDto.getUsername(), userLoginDto.getPassword());
         if (sessionID.isPresent()) {
 
-            var sessionDto = loginService.getSessionDto(sessionID.get());
+            var sessionDto = authorizationService.getSessionDto(sessionID.get());
             var sessionExpirationTime = sessionDto.expiresAt();
             long maxTime = Duration.between(LocalDateTime.now(), sessionExpirationTime).getSeconds();
 
@@ -56,6 +58,22 @@ public class LoginController {
             return "redirect:/home";
         }
         return "redirect:/";
+    }
+
+
+    @PostMapping("/logOut")
+    public String logOut(HttpServletRequest request, HttpServletResponse response) {
+        var sessionId = CookieUtil.getSessionIdFromCookie(request);
+
+        authorizationService.changeExpireTimeInSession(sessionId , LocalDateTime.now());
+
+        Cookie cookie = new Cookie(CookieUtil.getDEFAULT_SESSION_COOKIE_NAME(), sessionId);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return "redirect:/home";
     }
 
 
