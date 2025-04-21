@@ -1,7 +1,7 @@
 package com.maxkavun.repository;
 
 import com.maxkavun.entity.User;
-import com.maxkavun.exception.IncorrectUserLoginException;
+import com.maxkavun.exception.UserPersistenceException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -26,7 +26,7 @@ public class UserRepository extends AbstractHibernateRepository<User, Long> {
                     .getSingleResultOrNull());
         } catch (HibernateException exception) {
             log.error("Error while find user with username: {}", username, exception);
-            throw new IncorrectUserLoginException("Could not find user with username: " + username, exception);
+            throw new UserPersistenceException("Could not find user with username: " + username, exception);
         }
     }
 }
