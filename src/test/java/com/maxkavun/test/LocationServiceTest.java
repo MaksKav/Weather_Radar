@@ -11,8 +11,12 @@ import com.maxkavun.service.client.OpenWeatherClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
 
 public class LocationServiceTest {
@@ -55,21 +59,27 @@ public class LocationServiceTest {
 
 
     @Test
-    void shouldDeleteLocationIfExists(){
+    void shouldDeleteLocationIfExists() {
         UUID sessionUUID  = UUID.randomUUID();
         String sessionId   = sessionUUID.toString();
         BigDecimal lat = new BigDecimal("52.237049");
         BigDecimal lon = new BigDecimal("21.017532");
 
-        User user  = User.builder().login("max").build();
+        User user  = mock(User.class);
         Session session = Session.builder().id(sessionUUID).user(user).build();
         Location location = Location.builder().locationName("Warsaw").build();
 
-        when(sessionRepository.findById(sessionUUID)).thenReturn(Optional.of(session));
-        when(locationRepository.findByUserAndLatitudeAndLongitude(user , lat , lon)).thenReturn(Optional.of(location));
+        Set<Location> userLocations = new HashSet<>();
+        userLocations.add(location);
 
-        locationService.deleteLocationIfExists(lat , lon , sessionId);
+        when(sessionRepository.findById(sessionUUID)).thenReturn(Optional.of(session));
+        when(locationRepository.findByUserAndLatitudeAndLongitude(user, lat, lon)).thenReturn(Optional.of(location));
+        when(user.getLocations()).thenReturn(userLocations);
+
+        locationService.deleteLocationIfExists(lat, lon, sessionId);
 
         verify(locationRepository, times(1)).delete(location);
+        assertFalse(userLocations.contains(location), "Location should have been removed from the user's locations");
     }
+
 }
