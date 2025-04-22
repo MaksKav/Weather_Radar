@@ -66,6 +66,8 @@
                             <h2 th:text="${location.getRealTemperature() + '°C'}" style="font-weight: bold"></h2>
                             <h3 th:text="${location.getName() +', ' + location.getCountryCode()}"
                                 style="font-weight: bold"></h3>
+                            Latitude: <span th:text="${location.getLatitude()}"></span><br>
+                            Longitude: <span th:text="${location.getLongitude()}"></span><br>
                             Feels like <span
                                 th:text="${location.getTemperatureFeelsLike() + '°C. ' + #strings.capitalize(location.getDescription())}"></span><br>
                             Humidity: <span th:text="${location.getHumidity()} + '%'"></span>
