@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/registration" , "/processingLogin" , "/css/**" , "/js/**" , "/images/**");
+                .excludePathPatterns("/", "/registration" ,"/processingRegistration", "/processingLogin" , "/css/**" , "/js/**" , "/images/**");
     }
 
     @Bean
