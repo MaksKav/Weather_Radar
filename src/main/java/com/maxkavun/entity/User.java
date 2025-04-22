@@ -26,9 +26,11 @@ public class User extends AbstractEntity<Long> {
     @Column(nullable = false)
     private String password;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL , orphanRemoval = true , fetch = FetchType.LAZY)
     private Set<Location> locations = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL , orphanRemoval = true , fetch = FetchType.LAZY)
     private Set<Session> sessions = new HashSet<>();
 }
