@@ -21,7 +21,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 
-
+@Slf4j
 @Controller
 public class AuthorizationController {
 
@@ -57,6 +57,7 @@ public class AuthorizationController {
                 cookie.setPath("/");
                 cookie.setMaxAge((int) maxTime);
                 response.addCookie(cookie);
+                log.info("POST /processingLogin session was created successfully for user: {} " , userLoginDto.getUsername());
 
                 return "redirect:/home";
             }
@@ -82,6 +83,7 @@ public class AuthorizationController {
         cookie.setPath("/");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
+        log.info("POST /logOut Session was closed successfully");
 
         return "redirect:/home";
     }
