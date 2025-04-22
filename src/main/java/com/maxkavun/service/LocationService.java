@@ -117,11 +117,11 @@ public class LocationService {
         for (Location location : locations) {
             var loc = openWeatherClient.getLocationByCoordinates(location.getLatitude(), location.getLongitude());
             if (loc.isPresent()) {
+                loc.get().setName(location.getLocationName());
                 loc.get().setLatitude(location.getLatitude());
                 loc.get().setLongitude(location.getLongitude());
                 result.add(loc.get());
             }
-
         }
         return new UserLocationsWithWeatherDto(username, result);
     }
