@@ -69,7 +69,7 @@ public class WeatherPageController {
                 case "add" -> locationService.saveLocationIfAbsent(cityName, latitude, longitude, sessionStringUUID);
                 case "delete" -> locationService.deleteLocationIfExists(latitude, longitude, sessionStringUUID);
                 default -> {
-                    log.error("Problem with client unbelievable action: {}" , action)
+                    log.error("Problem with client unbelievable action: {}" , action);
                     return "error";
                 }
             }
