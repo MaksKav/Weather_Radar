@@ -1,5 +1,6 @@
 package com.maxkavun.test;
 
+import com.maxkavun.config.AppConfig;
 import com.maxkavun.dto.LocationWithWeatherDto;
 import com.maxkavun.entity.Location;
 import com.maxkavun.entity.Session;
@@ -10,6 +11,12 @@ import com.maxkavun.service.LocationService;
 import com.maxkavun.service.client.OpenWeatherClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
+
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Optional;
@@ -19,6 +26,10 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(SpringExtension.class)
+@WebAppConfiguration
+@ActiveProfiles("test")
+@ContextConfiguration(classes = {AppConfig.class})
 public class LocationServiceTest {
 
     private LocationService locationService;
