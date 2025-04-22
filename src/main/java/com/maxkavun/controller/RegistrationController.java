@@ -1,8 +1,6 @@
 package com.maxkavun.controller;
 
 import com.maxkavun.dto.UserRegistrationDto;
-import com.maxkavun.exception.RegistrationServiceException;
-import com.maxkavun.exception.RepositoryException;
 import com.maxkavun.exception.UserAlreadyExistsException;
 import com.maxkavun.service.RegistrationService;
 import jakarta.validation.Valid;
