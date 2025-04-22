@@ -2,7 +2,6 @@ package com.maxkavun.controller;
 
 import com.maxkavun.dto.CitySearchForm;
 import com.maxkavun.service.LocationService;
-import com.maxkavun.service.client.OpenWeatherClient;
 import com.maxkavun.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -29,6 +28,8 @@ public class WeatherPageController {
     public String homePage(HttpServletRequest request, Model model) {
         var sessionId = CookieUtil.getSessionIdFromCookie(request);
         var userWithLocations = locationService.getUserWithLocations(sessionId);
+        log.info("Successfully logged in user with locations: {}", userWithLocations);
+
         model.addAttribute("user", userWithLocations.username());
         model.addAttribute("locations", userWithLocations.locations());
         model.addAttribute("cityNameForm", new CitySearchForm());
@@ -40,6 +41,7 @@ public class WeatherPageController {
     @GetMapping("/search")
     public String searchLocationByName(@Valid @ModelAttribute("cityNameForm") CitySearchForm cityName, BindingResult bindingResult, Model model, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
+            log.warn("GET /search form error");
             return "home";
         }
 
@@ -59,13 +61,15 @@ public class WeatherPageController {
             @RequestParam("latitude") BigDecimal latitude,
             @RequestParam("longitude") BigDecimal longitude,
             HttpServletRequest request) {
-        String cookieStringUUID = CookieUtil.getSessionIdFromCookie(request);
+        String sessionStringUUID = CookieUtil.getSessionIdFromCookie(request);
+        log.info("POST /modifyLocation: {} for city: {} with latitude: {} , longitude: {}  for session with UUID: {}" , action , cityName , latitude, longitude , sessionStringUUID);
 
-        if (cookieStringUUID != null) {
+        if (sessionStringUUID != null) {
             switch (action) {
-                case "add" -> locationService.saveLocationIfAbsent(cityName, latitude, longitude, cookieStringUUID);
-                case "delete" -> locationService.deleteLocationIfExists(latitude, longitude, cookieStringUUID);
+                case "add" -> locationService.saveLocationIfAbsent(cityName, latitude, longitude, sessionStringUUID);
+                case "delete" -> locationService.deleteLocationIfExists(latitude, longitude, sessionStringUUID);
                 default -> {
+                    log.error("Problem with client unbelievable action: {}" , action)
                     return "error";
                 }
             }
