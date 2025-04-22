@@ -17,44 +17,42 @@
             <div class="card shadow">
                 <div class="card-body">
                     <div class="mb-3 text-center">
-                        <!--                <img src="../static/images/logo.jpg" alt="logo" class="img-fluid">-->
-                        <!--                ТАК ФОТКА БУДЕТ РАБОТАТЬ ДЛЯ СЕРВЕРА     -->
                         <img src="images/logo.jpg" alt="logo" class="img-fluid">
                         <h1 class="sign_in mt-4">Sign Up</h1>
                     </div>
 
                     <form th:action="@{/processingRegistration}" th:object="${userRegistrationDto}" method="post">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" th:field="*{username}">
-                        <div th:if="${#fields.hasErrors('username')}" class="alert alert-danger p-0" role="alert">
-                            <ul>
-                                <li th:each="err : ${#fields.errors('username')}" th:text="${err}"></li>
-                            </ul>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" th:field="*{username}">
+                            <div th:if="${#fields.hasErrors('username')}" class="alert alert-danger p-0" role="alert">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('username')}" th:text="${err}"></li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" th:field="*{password}">
-                        <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger p-0" role="alert">
-                            <ul>
-                                <li th:each="err : ${#fields.errors('password')}" th:text="${err}"></li>
-                            </ul>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" th:field="*{password}">
+                            <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger p-0" role="alert">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('password')}" th:text="${err}"></li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="repeatPassword" class="form-label">Repeat password</label>
-                        <input type="password" class="form-control" id="repeatPassword" th:field="*{repeatPassword}">
-                        <div th:if="${#fields.hasErrors('repeatPassword')}" class="alert alert-danger p-0" role="alert">
-                            <ul>
-                                <li th:each="err : ${#fields.errors('repeatPassword')}" th:text="${err}"></li>
-                            </ul>
+                        <div class="mb-3">
+                            <label for="repeatPassword" class="form-label">Repeat password</label>
+                            <input type="password" class="form-control" id="repeatPassword" th:field="*{repeatPassword}">
+                            <div th:if="${#fields.hasErrors('repeatPassword')}" class="alert alert-danger p-0" role="alert">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('repeatPassword')}" th:text="${err}"></li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
 
-                    <button type="submit" class="btn btn-primary w-100">Sign up</button>
+                        <button type="submit" class="btn btn-primary w-100">Sign up</button>
                     </form>
                     <p class="mt-2 text-center">Already have an account?<a th:href="@{/}"> Sign in here</a></p>
                 </div>
