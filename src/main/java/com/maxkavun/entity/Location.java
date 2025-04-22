@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 @Builder
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Location extends AbstractEntity<Long> {
