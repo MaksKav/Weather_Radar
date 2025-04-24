@@ -6,7 +6,7 @@ import com.maxkavun.entity.User;
 import com.maxkavun.exception.*;
 import com.maxkavun.repository.SessionRepository;
 import com.maxkavun.repository.UserRepository;
-import com.maxkavun.util.PasswordUtil;
+import com.maxkavun.util.PasswordUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +53,7 @@ public class AuthorizationService {
             }
 
             return userOpt.map(user -> {
-                if (!PasswordUtil.checkPassword(password, user.getPassword())) {
+                if (!PasswordUtils.checkPassword(password, user.getPassword())) {
                     log.warn("Incorrect password for user {}", username);
                     throw new IncorrectPasswordException("Password is not correct");
                 }
