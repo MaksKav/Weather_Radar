@@ -24,6 +24,10 @@ import java.util.Optional;
 @Service
 public class OpenWeatherClient {
 
+    public static final String GEO_LOCATIONS_URL = "https://api.openweathermap.org/geo/1.0/direct?q=%s&limit=10&appid=%s";
+    public static final String WEATHER_BY_COORDINATES_URL = "https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&units=metric&appid=%s";
+    public static final int TIMEOUT_SECONDS = 5;
+
     @Value("${openweather.api.key}")
     private String apiKey;
 
@@ -34,12 +38,12 @@ public class OpenWeatherClient {
     public List<LocationInfoDto> getLocationsByCityName(String cityName){
         try {
             var encodedCityName = URLEncoder.encode(cityName, StandardCharsets.UTF_8);
-            var url = String.format("https://api.openweathermap.org/geo/1.0/direct?q=%s&limit=10&appid=%s", encodedCityName, apiKey);
+            var url = String.format(GEO_LOCATIONS_URL, encodedCityName, apiKey);
 
             var request = HttpRequest.newBuilder()
                     .uri(new URI(url))
                     .version(HttpClient.Version.HTTP_1_1)
-                    .timeout(Duration.of(5 , ChronoUnit.SECONDS))
+                    .timeout(Duration.of(TIMEOUT_SECONDS , ChronoUnit.SECONDS))
                     .GET()
                     .build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -51,12 +55,12 @@ public class OpenWeatherClient {
     }
 
     public Optional<LocationWithWeatherDto> getLocationByCoordinates(BigDecimal latitude, BigDecimal longitude){
-        var url = String.format("https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&units=metric&appid=%s" , latitude, longitude, apiKey);
+        var url = String.format(WEATHER_BY_COORDINATES_URL , latitude, longitude, apiKey);
         try {
             var request = HttpRequest.newBuilder()
                     .uri(new URI(url))
                     .version(HttpClient.Version.HTTP_1_1)
-                    .timeout(Duration.of(5 , ChronoUnit.SECONDS))
+                    .timeout(Duration.of(TIMEOUT_SECONDS , ChronoUnit.SECONDS))
                     .GET()
                     .build();
             HttpResponse<String> response = httpClient.send(request , HttpResponse.BodyHandlers.ofString());
