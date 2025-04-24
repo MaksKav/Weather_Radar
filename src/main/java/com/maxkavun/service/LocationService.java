@@ -115,12 +115,12 @@ public class LocationService {
     private UserLocationsWithWeatherDto enrichLocationsWithWeather(String username, List<Location> locations) {
         List<LocationWithWeatherDto> result = new ArrayList<>();
         for (Location location : locations) {
-            var loc = openWeatherClient.getLocationByCoordinates(location.getLatitude(), location.getLongitude());
-            if (loc.isPresent()) {
-                loc.get().setName(location.getLocationName());
-                loc.get().setLatitude(location.getLatitude());
-                loc.get().setLongitude(location.getLongitude());
-                result.add(loc.get());
+            var locationByCoordinates = openWeatherClient.getLocationByCoordinates(location.getLatitude(), location.getLongitude());
+            if (locationByCoordinates.isPresent()) {
+                locationByCoordinates.get().setName(location.getLocationName());
+                locationByCoordinates.get().setLatitude(location.getLatitude());
+                locationByCoordinates.get().setLongitude(location.getLongitude());
+                result.add(locationByCoordinates.get());
             }
         }
         return new UserLocationsWithWeatherDto(username, result);
