@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.maxkavun.dto.LocationWithWeatherDto;
+
 import java.io.IOException;
 
 public class WeatherByLocationDeserializer extends JsonDeserializer<LocationWithWeatherDto> {
@@ -21,7 +22,7 @@ public class WeatherByLocationDeserializer extends JsonDeserializer<LocationWith
         var humidity = (int) Math.round(node.get("main").get("humidity").asDouble());
         var mainCondition = node.get("weather").get(0).get("main").asText();
         var description = node.get("weather").get(0).get("description").asText();
-        return   LocationWithWeatherDto.builder()
+        return LocationWithWeatherDto.builder()
                 .name(name)
                 .countryCode(countryCode)
                 .realTemperature(realTemperature)
