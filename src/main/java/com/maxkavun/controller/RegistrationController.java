@@ -28,7 +28,7 @@ public class RegistrationController {
         return "registration";
     }
 
-    @PostMapping("/processingRegistration")
+    @PostMapping("/process-registration")
     public String processRegistration(@Valid @ModelAttribute("userRegistrationDto") UserRegistrationDto userRegistrationDto, BindingResult bindingResult) {
         if (!userRegistrationDto.getPassword().equals(userRegistrationDto.getRepeatPassword())) {
             bindingResult.rejectValue("repeatPassword", "error.repeatPassword", "Passwords must be same");

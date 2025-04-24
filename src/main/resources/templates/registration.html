@@ -21,7 +21,7 @@
                         <h1 class="sign_in mt-4">Sign Up</h1>
                     </div>
 
-                    <form th:action="@{/processingRegistration}" th:object="${userRegistrationDto}" method="post">
+                    <form th:action="@{/process-registration}" th:object="${userRegistrationDto}" method="post">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" id="username" th:field="*{username}">
