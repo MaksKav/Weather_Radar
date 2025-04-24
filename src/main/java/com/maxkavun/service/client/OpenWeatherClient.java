@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxkavun.dto.LocationInfoDto;
 import com.maxkavun.dto.LocationWithWeatherDto;
 import com.maxkavun.exception.HttpClientException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,28 +20,23 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class OpenWeatherClient {
 
     @Value("${openweather.api.key}")
     private String apiKey;
 
-    private final HttpClient httpClient;
-
+    private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper;
 
 
-    public OpenWeatherClient(ObjectMapper objectMapper) {
-        this.httpClient = HttpClient.newHttpClient();
-        this.objectMapper = objectMapper;
-    }
-
     public List<LocationInfoDto> getLocationsByCityName(String cityName){
         try {
-            String encodedCityName = URLEncoder.encode(cityName, StandardCharsets.UTF_8);
-            String url = String.format("https://api.openweathermap.org/geo/1.0/direct?q=%s&limit=10&appid=%s", encodedCityName, apiKey);
+            var encodedCityName = URLEncoder.encode(cityName, StandardCharsets.UTF_8);
+            var url = String.format("https://api.openweathermap.org/geo/1.0/direct?q=%s&limit=10&appid=%s", encodedCityName, apiKey);
 
-            HttpRequest request = HttpRequest.newBuilder()
+            var request = HttpRequest.newBuilder()
                     .uri(new URI(url))
                     .version(HttpClient.Version.HTTP_1_1)
                     .timeout(Duration.of(5 , ChronoUnit.SECONDS))
@@ -55,9 +51,9 @@ public class OpenWeatherClient {
     }
 
     public Optional<LocationWithWeatherDto> getLocationByCoordinates(BigDecimal latitude, BigDecimal longitude){
-        String url = String.format("https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&units=metric&appid=%s" , latitude, longitude, apiKey);
+        var url = String.format("https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&units=metric&appid=%s" , latitude, longitude, apiKey);
         try {
-            HttpRequest request = HttpRequest.newBuilder()
+            var request = HttpRequest.newBuilder()
                     .uri(new URI(url))
                     .version(HttpClient.Version.HTTP_1_1)
                     .timeout(Duration.of(5 , ChronoUnit.SECONDS))

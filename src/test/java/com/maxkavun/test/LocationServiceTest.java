@@ -48,15 +48,15 @@ public class LocationServiceTest {
 
     @Test
     void shouldSaveLocationIfNotExists(){
-        LocationWithWeatherDto locationWithWeatherDto = mock(LocationWithWeatherDto.class);
-        UUID sessionUUID  = UUID.randomUUID();
-        String sessionId   = sessionUUID.toString();
-        User user  = User.builder().login("max").build();
-        Session session = Session.builder().id(sessionUUID).user(user).build();
+        var locationWithWeatherDto = mock(LocationWithWeatherDto.class);
+        var sessionUUID  = UUID.randomUUID();
+        var sessionId   = sessionUUID.toString();
+        var user  = User.builder().login("max").build();
+        var session = Session.builder().id(sessionUUID).user(user).build();
 
-        String cityName = "Warsaw";
-        BigDecimal lat = new BigDecimal("52.237049");
-        BigDecimal lon = new BigDecimal("21.017532");
+        var cityName = "Warsaw";
+        var lat = new BigDecimal("52.237049");
+        var lon = new BigDecimal("21.017532");
 
         when(sessionRepository.findById(sessionUUID)).thenReturn(Optional.of(session));
         when(locationRepository.findByUserAndLatitudeAndLongitude(user, lat, lon)).thenReturn(Optional.empty());
@@ -71,14 +71,14 @@ public class LocationServiceTest {
 
     @Test
     void shouldDeleteLocationIfExists() {
-        UUID sessionUUID  = UUID.randomUUID();
-        String sessionId   = sessionUUID.toString();
-        BigDecimal lat = new BigDecimal("52.237049");
-        BigDecimal lon = new BigDecimal("21.017532");
+        var sessionUUID  = UUID.randomUUID();
+        var sessionId   = sessionUUID.toString();
+        var lat = new BigDecimal("52.237049");
+        var lon = new BigDecimal("21.017532");
 
-        User user  = mock(User.class);
-        Session session = Session.builder().id(sessionUUID).user(user).build();
-        Location location = Location.builder().locationName("Warsaw").build();
+        var user  = mock(User.class);
+        var session = Session.builder().id(sessionUUID).user(user).build();
+        var location = Location.builder().locationName("Warsaw").build();
 
         Set<Location> userLocations = new HashSet<>();
         userLocations.add(location);

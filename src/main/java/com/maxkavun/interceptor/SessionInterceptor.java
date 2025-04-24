@@ -4,22 +4,20 @@ import com.maxkavun.service.AuthorizationService;
 import com.maxkavun.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+@RequiredArgsConstructor
 @Component
 public class SessionInterceptor implements HandlerInterceptor {
 
     private final AuthorizationService authorizationService;
 
-    public SessionInterceptor(AuthorizationService authorizationService) {
-        this.authorizationService = authorizationService;
-    }
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String sessionId = CookieUtil.getSessionIdFromCookie(request);
-        String requestUri = request.getRequestURI();
+        var sessionId = CookieUtil.getSessionIdFromCookie(request);
+        var requestUri = request.getRequestURI();
 
         if (sessionId != null && authorizationService.isSessionValid(sessionId) &&
             (requestUri.equals("/") || requestUri.equals("/registration"))) {

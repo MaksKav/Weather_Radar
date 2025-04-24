@@ -28,7 +28,7 @@ public class OpenWeatherClientTest {
 
     @Test
     public void testListLocationsFromCityName() {
-        String cityName = "Warsaw";
+        var cityName = "Warsaw";
         List<LocationInfoDto> cities = client.getLocationsByCityName(cityName);
         assertAll(
                 () -> assertFalse(cities.isEmpty()),
@@ -44,10 +44,10 @@ public class OpenWeatherClientTest {
 
     @Test
     public void testLocationFromCoordinates() {
-        String cityName = "Warsaw";
-        String cityCode = "PL";
-        BigDecimal lat = BigDecimal.valueOf(52.231958);
-        BigDecimal lon = BigDecimal.valueOf(21.006724);
+        var cityName = "Warsaw";
+        var cityCode = "PL";
+        var lat = BigDecimal.valueOf(52.231958);
+        var lon = BigDecimal.valueOf(21.006724);
 
         var location = client.getLocationByCoordinates(lat, lon);
         assertTrue(location.isPresent(), "location is not present");
@@ -56,16 +56,16 @@ public class OpenWeatherClientTest {
                 () -> assertEquals(city.getCountryCode(), cityCode),
                 () -> assertEquals(city.getName(), cityName),
                 () -> {
-                    BigDecimal actual = BigDecimal.valueOf(city.getRealTemperature());
-                    BigDecimal feelsLike = BigDecimal.valueOf(city.getTemperatureFeelsLike());
-                    BigDecimal diff = actual.subtract(feelsLike).abs();
-                    BigDecimal normalDifference = BigDecimal.valueOf(20);
+                    var actual = BigDecimal.valueOf(city.getRealTemperature());
+                    var feelsLike = BigDecimal.valueOf(city.getTemperatureFeelsLike());
+                    var diff = actual.subtract(feelsLike).abs();
+                    var normalDifference = BigDecimal.valueOf(20);
                     assertTrue(diff.compareTo(normalDifference) <= 0,
                             "Difference between actualTemp and feelsLikeTemp is greater than 20: " + diff);
                 },
                 () -> {
-                    int minTem = -60;
-                    int maxTemp = 60;
+                    var minTem = -60;
+                    var maxTemp = 60;
                     assertTrue(city.getRealTemperature() < maxTemp && city.getRealTemperature() > minTem);
                 }
         );

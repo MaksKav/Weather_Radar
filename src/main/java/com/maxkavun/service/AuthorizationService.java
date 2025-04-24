@@ -32,7 +32,7 @@ public class AuthorizationService {
     public UUID createSessionForUser(User user) {
         try {
             var sessionId = UUID.randomUUID();
-            int sessionTimeLife = 15;
+            var sessionTimeLife = 15;
             var expirationTime = LocalDateTime.now().plusMinutes(sessionTimeLife);
             sessionRepository.save(new Session(sessionId, user, expirationTime));
             log.info("Session with id {} created successfully", sessionId);
@@ -68,7 +68,7 @@ public class AuthorizationService {
 
     @Transactional(readOnly = true)
     public boolean isSessionValid(String sessionId) {
-        UUID sessionUuid = UUID.fromString(sessionId);
+        var sessionUuid = UUID.fromString(sessionId);
         return sessionRepository.findById(sessionUuid).map(session -> session.getExpiresAt().isAfter(LocalDateTime.now())).orElse(false);
     }
 
@@ -88,7 +88,7 @@ public class AuthorizationService {
 
     @Transactional()
     public void changeExpireTimeInSession(String sessionId, LocalDateTime now) {
-        UUID sessionUuid = UUID.fromString(sessionId);
+        var sessionUuid = UUID.fromString(sessionId);
 
         var sessionOpt = sessionRepository.findById(sessionUuid);
         sessionOpt.ifPresent(session -> {

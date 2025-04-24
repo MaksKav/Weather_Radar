@@ -33,7 +33,7 @@ public class HibernateTestConfig {
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        var dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl(postgres.getJdbcUrl());
         dataSource.setUsername(postgres.getUsername());
@@ -43,7 +43,7 @@ public class HibernateTestConfig {
 
     @Bean
     public SessionFactory sessionFactory() {
-        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+        var sessionFactoryBean = new LocalSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource());
         sessionFactoryBean.setPackagesToScan("com.maxkavun.entity");
         sessionFactoryBean.setHibernateProperties(hibernateProperties());
@@ -57,7 +57,7 @@ public class HibernateTestConfig {
     }
 
     private Properties hibernateProperties() {
-        Properties properties = new Properties();
+        var properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.put("hibernate.show_sql", "true");
         properties.put("hibernate.format_sql", "true");

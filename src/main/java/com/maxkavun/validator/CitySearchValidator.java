@@ -8,8 +8,8 @@ import java.util.Optional;
 public class CitySearchValidator {
 
     public Optional<String> validate(String cityName) {
-        int minSize = 2;
-        int maxSize = 60;
+        var minSize = 2;
+        var maxSize = 60;
 
         if (cityName == null || cityName.isBlank()) {
             return Optional.of("City name cannot be empty");

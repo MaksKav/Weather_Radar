@@ -5,26 +5,21 @@ import com.maxkavun.service.LocationService;
 import com.maxkavun.util.CookieUtil;
 import com.maxkavun.validator.CitySearchValidator;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
+@RequiredArgsConstructor
 @Slf4j
 @Controller
 public class WeatherPageController {
 
     private final LocationService locationService;
     private final CitySearchValidator citySearchValidator;
-
-    public WeatherPageController(LocationService locationService , CitySearchValidator citySearchValidator) {
-        this.locationService = locationService;
-        this.citySearchValidator = citySearchValidator;
-    }
 
 
     @GetMapping("/home")
@@ -66,7 +61,8 @@ public class WeatherPageController {
             @RequestParam("latitude") BigDecimal latitude,
             @RequestParam("longitude") BigDecimal longitude,
             HttpServletRequest request) {
-        String sessionStringUUID = CookieUtil.getSessionIdFromCookie(request);
+
+        var sessionStringUUID = CookieUtil.getSessionIdFromCookie(request);
         log.info("POST /modifyLocation: {} for city: {} with latitude: {} , longitude: {}  for session with UUID: {}" , action , cityName , latitude, longitude , sessionStringUUID);
 
         if (sessionStringUUID != null) {

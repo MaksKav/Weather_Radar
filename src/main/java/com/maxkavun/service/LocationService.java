@@ -128,8 +128,9 @@ public class LocationService {
 
 
     private Session getSession(String sessionStringUUID) {
-        UUID sessionUUID = UUID.fromString(sessionStringUUID);
+        var sessionUUID = UUID.fromString(sessionStringUUID);
         var session = sessionRepository.findById(sessionUUID);
+
         if (session.isPresent()) {
             log.info("Session with UUID: {} was found successfully ", sessionStringUUID);
             return session.get();

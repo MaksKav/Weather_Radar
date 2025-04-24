@@ -14,13 +14,13 @@ public class WeatherByLocationDeserializer extends JsonDeserializer<LocationWith
     public LocationWithWeatherDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 
-        String name = node.get("name").asText();
-        String countryCode = node.get("sys").get("country").asText();
-        int realTemperature = (int) Math.round(node.get("main").get("temp").asDouble());
-        int temperatureFeelsLike = (int) Math.round(node.get("main").get("feels_like").asDouble());
-        int humidity = (int) Math.round(node.get("main").get("humidity").asDouble());
-        String mainCondition = node.get("weather").get(0).get("main").asText();
-        String description = node.get("weather").get(0).get("description").asText();
+        var name = node.get("name").asText();
+        var countryCode = node.get("sys").get("country").asText();
+        var realTemperature = (int) Math.round(node.get("main").get("temp").asDouble());
+        var temperatureFeelsLike = (int) Math.round(node.get("main").get("feels_like").asDouble());
+        var humidity = (int) Math.round(node.get("main").get("humidity").asDouble());
+        var mainCondition = node.get("weather").get(0).get("main").asText();
+        var description = node.get("weather").get(0).get("description").asText();
         return   LocationWithWeatherDto.builder()
                 .name(name)
                 .countryCode(countryCode)

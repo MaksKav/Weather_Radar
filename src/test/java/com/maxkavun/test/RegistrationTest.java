@@ -46,11 +46,11 @@ public class RegistrationTest {
     public void userRegistrationTest(int runNumber) {
         var user = getUserDto();
 
-        BindingResult bindingResult = mock(BindingResult.class);
+        var bindingResult = mock(BindingResult.class);
         Mockito.when(bindingResult.hasErrors()).thenReturn(false);
 
         if (runNumber == 1) {
-            String viewName = registrationController.processRegistration(user, bindingResult);
+            var viewName = registrationController.processRegistration(user, bindingResult);
             var savedUser = userRepository.findByUsername(user.getUsername()).orElse(null);
 
             Assertions.assertNotNull(savedUser, "User should be saved in the database");
@@ -58,7 +58,7 @@ public class RegistrationTest {
             Assertions.assertEquals("redirect:/", viewName, "After successful registration, it should redirect to the home page");
         } else {
             registrationService.saveUserIfNotExists(user.getUsername(), user.getPassword());
-            UserAlreadyExistsException exception = Assertions.assertThrows(UserAlreadyExistsException.class, () -> {
+            var exception = Assertions.assertThrows(UserAlreadyExistsException.class, () -> {
                 registrationService.saveUserIfNotExists(user.getUsername(), user.getPassword());
             });
             Assertions.assertTrue(exception.getMessage().contains("User with username"), "Expected exception message to mention user already exists");
@@ -67,9 +67,9 @@ public class RegistrationTest {
 
 
     private UserRegistrationDto getUserDto() {
-        String username = "testuser";
-        String password = "Password_12";
-        String repeatPassword = "Password_12";
+        var username = "testuser";
+        var password = "Password_12";
+        var repeatPassword = "Password_12";
 
         var user = new UserRegistrationDto();
         user.setUsername(username);
