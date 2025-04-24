@@ -28,7 +28,7 @@ public class AuthorizationService {
     }
 
 
-    @Transactional
+    @Transactional()
     public UUID createSessionForUser(User user) {
         try {
             var sessionId = UUID.randomUUID();
@@ -44,7 +44,7 @@ public class AuthorizationService {
     }
 
 
-    @Transactional
+    @Transactional()
     public Optional<UUID> saveSessionIfUserAuthorized(String username, String password) {
         try {
             var userOpt = userRepository.findByUsername(username);
