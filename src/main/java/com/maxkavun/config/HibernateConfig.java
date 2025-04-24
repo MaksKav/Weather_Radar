@@ -25,8 +25,8 @@ public class HibernateConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://localhost:5434/weather_radar");
-        dataSource.setUsername("maxkavun");
-        dataSource.setPassword("SUper_parol1");
+        dataSource.setUsername("KEK");
+        dataSource.setPassword("LOL");
         return dataSource;
     }
 
