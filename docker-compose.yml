@@ -5,8 +5,8 @@ services:
     restart: always
     environment:
       POSTGRES_DB: weather_radar
-      POSTGRES_USER: maxkavun
-      POSTGRES_PASSWORD: SUper_parol1
+      POSTGRES_USER: LOL
+      POSTGRES_PASSWORD: KEK
     ports:
       - "5434:5432"
     volumes:
