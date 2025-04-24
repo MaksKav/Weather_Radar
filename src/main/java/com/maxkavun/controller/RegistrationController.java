@@ -3,6 +3,7 @@ package com.maxkavun.controller;
 import com.maxkavun.dto.UserRegistrationDto;
 import com.maxkavun.exception.UserAlreadyExistsException;
 import com.maxkavun.service.RegistrationService;
+import com.maxkavun.validator.UserRegistrationValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegistrationController {
 
     private final RegistrationService registrationService;
+    private final UserRegistrationValidator userRegistrationValidator;
 
 
     @GetMapping("/registration")
@@ -29,12 +31,8 @@ public class RegistrationController {
 
     @PostMapping("/process-registration")
     public String processRegistration(@Valid @ModelAttribute("userRegistrationDto") UserRegistrationDto userRegistrationDto, BindingResult bindingResult) {
-        if (!userRegistrationDto.getPassword().equals(userRegistrationDto.getRepeatPassword())) {
-            bindingResult.rejectValue("repeatPassword", "error.repeatPassword", "Passwords must be same");
-            return "registration";
-        }
-
-        if (bindingResult.hasErrors()) {
+        userRegistrationValidator.validate(userRegistrationDto , bindingResult);
+        if (bindingResult.hasErrors()){
             return "registration";
         }
 
