@@ -2,7 +2,7 @@ package com.maxkavun.controller;
 
 import com.maxkavun.dto.CitySearchFormDto;
 import com.maxkavun.service.LocationService;
-import com.maxkavun.util.CookieUtil;
+import com.maxkavun.util.CookieUtils;
 import com.maxkavun.validator.CitySearchValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class WeatherPageController {
 
     @GetMapping("/home")
     public String homePage(HttpServletRequest request, Model model) {
-        var sessionId = CookieUtil.getSessionIdFromCookie(request);
+        var sessionId = CookieUtils.getSessionIdFromCookie(request);
         var userWithLocations = locationService.getUserWithLocations(sessionId);
         log.info("Successfully logged in user with locations: {}", userWithLocations);
 
@@ -45,7 +45,7 @@ public class WeatherPageController {
             return "home";
         }
 
-        var sessionId = CookieUtil.getSessionIdFromCookie(request);
+        var sessionId = CookieUtils.getSessionIdFromCookie(request);
         var userWithCitiesList = locationService.getUserWithLocationsWithInfo(sessionId, cityName.getCityName());
         model.addAttribute("user", userWithCitiesList.username());
         model.addAttribute("citiesList", userWithCitiesList.locations());
@@ -62,7 +62,7 @@ public class WeatherPageController {
             @RequestParam("longitude") BigDecimal longitude,
             HttpServletRequest request) {
 
-        var sessionStringUUID = CookieUtil.getSessionIdFromCookie(request);
+        var sessionStringUUID = CookieUtils.getSessionIdFromCookie(request);
         log.info("POST /modifyLocation: {} for city: {} with latitude: {} , longitude: {}  for session with UUID: {}" , action , cityName , latitude, longitude , sessionStringUUID);
 
         if (sessionStringUUID != null) {

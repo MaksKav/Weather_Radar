@@ -4,7 +4,7 @@ import com.maxkavun.dto.UserLoginDto;
 import com.maxkavun.exception.IncorrectPasswordException;
 import com.maxkavun.exception.NotFoundException;
 import com.maxkavun.service.AuthorizationService;
-import com.maxkavun.util.CookieUtil;
+import com.maxkavun.util.CookieUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -72,11 +72,11 @@ public class AuthorizationController {
 
     @PostMapping("/logOut")
     public String logOut(HttpServletRequest request, HttpServletResponse response) {
-        var sessionId = CookieUtil.getSessionIdFromCookie(request);
+        var sessionId = CookieUtils.getSessionIdFromCookie(request);
 
         authorizationService.changeExpireTimeInSession(sessionId , LocalDateTime.now());
 
-        var cookie = new Cookie(CookieUtil.getDEFAULT_SESSION_COOKIE_NAME(), sessionId);
+        var cookie = new Cookie(CookieUtils.getDEFAULT_SESSION_COOKIE_NAME(), sessionId);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
         cookie.setMaxAge(0);

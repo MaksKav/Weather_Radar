@@ -1,7 +1,7 @@
 package com.maxkavun.interceptor;
 
 import com.maxkavun.service.AuthorizationService;
-import com.maxkavun.util.CookieUtil;
+import com.maxkavun.util.CookieUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        var sessionId = CookieUtil.getSessionIdFromCookie(request);
+        var sessionId = CookieUtils.getSessionIdFromCookie(request);
         var requestUri = request.getRequestURI();
 
         if (sessionId != null && authorizationService.isSessionValid(sessionId) &&

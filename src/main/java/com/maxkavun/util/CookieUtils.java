@@ -4,12 +4,12 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 
-public class CookieUtil {
+public class CookieUtils {
 
     @Getter
     private static final String DEFAULT_SESSION_COOKIE_NAME = "CUSTOM_SESSION_ID";
 
-    private CookieUtil() {}
+    private CookieUtils() {}
 
     public static String getSessionIdFromCookie(HttpServletRequest request , String cookieName) {
         Cookie[] cookies = request.getCookies();
