@@ -1,8 +1,9 @@
 package com.maxkavun.controller;
 
-import com.maxkavun.dto.CitySearchForm;
+import com.maxkavun.dto.CitySearchFormDto;
 import com.maxkavun.service.LocationService;
 import com.maxkavun.util.CookieUtil;
+import com.maxkavun.validator.CitySearchValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +19,11 @@ import java.math.BigDecimal;
 public class WeatherPageController {
 
     private final LocationService locationService;
+    private final CitySearchValidator citySearchValidator;
 
-    public WeatherPageController(LocationService locationService) {
+    public WeatherPageController(LocationService locationService , CitySearchValidator citySearchValidator) {
         this.locationService = locationService;
+        this.citySearchValidator = citySearchValidator;
     }
 
 
@@ -32,16 +35,18 @@ public class WeatherPageController {
 
         model.addAttribute("user", userWithLocations.username());
         model.addAttribute("locations", userWithLocations.locations());
-        model.addAttribute("cityNameForm", new CitySearchForm());
+        model.addAttribute("cityNameForm", new CitySearchFormDto());
         return "home";
 
     }
 
 
     @GetMapping("/search")
-    public String searchLocationByName(@Valid @ModelAttribute("cityNameForm") CitySearchForm cityName, BindingResult bindingResult, Model model, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
+    public String searchLocationByName(@ModelAttribute("cityNameForm") CitySearchFormDto cityName, Model model, HttpServletRequest request) {
+        var validationResult = citySearchValidator.validate(cityName.getCityName());
+        if (validationResult.isPresent()) {
             log.warn("GET /search form error");
+            model.addAttribute("cityNameError", validationResult.get());
             return "home";
         }
 
@@ -49,7 +54,7 @@ public class WeatherPageController {
         var userWithCitiesList = locationService.getUserWithLocationsWithInfo(sessionId, cityName.getCityName());
         model.addAttribute("user", userWithCitiesList.username());
         model.addAttribute("citiesList", userWithCitiesList.locations());
-        model.addAttribute("cityNameForm", new CitySearchForm());
+        model.addAttribute("cityNameForm", new CitySearchFormDto());
         return "search-page";
     }
 

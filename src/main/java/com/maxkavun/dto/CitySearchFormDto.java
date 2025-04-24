@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CitySearchForm {
+public class CitySearchFormDto {
 
         @NotBlank(message = "City name is empty")
         @Size(min = 2, max = 60, message = "The city name must be between 2 and 60 characters long")
