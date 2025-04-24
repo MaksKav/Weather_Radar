@@ -6,12 +6,9 @@ import com.maxkavun.serialization.WeatherByLocationDeserializer;
 import lombok.*;
 import java.math.BigDecimal;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@ToString
 @Builder
-@NoArgsConstructor
+@Setter
+@Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(using = WeatherByLocationDeserializer.class)
 public class LocationWithWeatherDto{
