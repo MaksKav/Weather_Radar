@@ -22,17 +22,17 @@ public class HibernateConfig {
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        var dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://localhost:5434/weather_radar");
-        dataSource.setUsername("KEK");
-        dataSource.setPassword("LOL");
+        dataSource.setUsername("LOL");
+        dataSource.setPassword("KEK");
         return dataSource;
     }
 
     @Bean
     public SessionFactory sessionFactory() {
-        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+        var sessionFactoryBean = new LocalSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource());
         sessionFactoryBean.setPackagesToScan("com.maxkavun.entity");
         sessionFactoryBean.setHibernateProperties(hibernateProperties());
@@ -46,7 +46,7 @@ public class HibernateConfig {
     }
 
     private Properties hibernateProperties() {
-        Properties properties = new Properties();
+        var properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.put("hibernate.show_sql", "true");
         properties.put("hibernate.hbm2ddl.auto", "update");
