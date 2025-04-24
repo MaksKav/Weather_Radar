@@ -49,7 +49,7 @@ public class AuthorizationService {
         try {
             var userOpt = userRepository.findByUsername(username);
             if (userOpt.isEmpty()) {
-                throw new UserNotFoundException("User not found");
+                throw new NotFoundException("User not found");
             }
 
             return userOpt.map(user -> {
@@ -78,7 +78,7 @@ public class AuthorizationService {
         try {
             return sessionRepository.findById(sessionId)
                     .map(session -> new SessionDto(session.getId(), session.getExpiresAt()))
-                    .orElseThrow(() -> new SessionNotFoundException("Session not found with id: " + sessionId));
+                    .orElseThrow(() -> new NotFoundException("Session not found with id: " + sessionId));
         } catch (RepositoryException e) {
             log.error("Database error while finding session with id: {}", sessionId);
             throw new AuthorizationServiceException("Database error occurred", e);

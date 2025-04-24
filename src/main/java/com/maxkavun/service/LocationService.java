@@ -9,7 +9,7 @@ import com.maxkavun.entity.User;
 import com.maxkavun.exception.HttpClientException;
 import com.maxkavun.exception.LocationServiceException;
 import com.maxkavun.exception.RepositoryException;
-import com.maxkavun.exception.SessionNotFoundException;
+import com.maxkavun.exception.NotFoundException;
 import com.maxkavun.repository.LocationRepository;
 import com.maxkavun.repository.SessionRepository;
 import com.maxkavun.service.client.OpenWeatherClient;
@@ -43,7 +43,7 @@ public class LocationService {
             var user = getUserBySession(sessionStringUUID);
             var userLocations = locationRepository.findAllUserLocations(user);
             return enrichLocationsWithWeather(user.getLogin(), userLocations);
-        } catch (RepositoryException | HttpClientException | SessionNotFoundException e) {
+        } catch (RepositoryException | HttpClientException | NotFoundException e) {
             log.error("Error while getting all user locations with sessionUUID: {}", sessionStringUUID, e);
             throw new LocationServiceException("Error while getting all user locations", e);
         }
@@ -56,7 +56,7 @@ public class LocationService {
             var user = getUserBySession(sessionStringUUID);
             var citiesList = openWeatherClient.getLocationsByCityName(cityName);
             return new UserLocationsWithInfoDto(user.getLogin() , citiesList);
-        } catch (HttpClientException | SessionNotFoundException e ){
+        } catch (HttpClientException | NotFoundException e ){
             log.error("Error while getting all user locations with sessionUUID: {}", sessionStringUUID, e);
             throw new LocationServiceException("Error while getting all user locations", e);
         }
@@ -85,7 +85,7 @@ public class LocationService {
                 locationRepository.save(loc);
                 log.info("Location: {} wad added successfully to user: {} ", loc, user.getLogin());
             }
-        } catch (HttpClientException | RepositoryException | SessionNotFoundException e) {
+        } catch (HttpClientException | RepositoryException | NotFoundException e) {
             log.error("Error while adding location");
             throw new LocationServiceException("Error while added location for user", e);
         }
@@ -105,7 +105,7 @@ public class LocationService {
                 locationRepository.delete(userLocation.get());
             }
             log.info("Location: {} was deleted successfully from user: {} ", userLocation.get(), user.getLogin());
-        } catch (RepositoryException | SessionNotFoundException e) {
+        } catch (RepositoryException | NotFoundException e) {
             log.error("Error while deleting location");
             throw new LocationServiceException("Error while deleting location for user", e);
         }
@@ -134,7 +134,7 @@ public class LocationService {
             log.info("Session with UUID: {} was found successfully ", sessionStringUUID);
             return session.get();
         }
-        throw new SessionNotFoundException("Session with UUID: " + sessionStringUUID + " not found");
+        throw new NotFoundException("Session with UUID: " + sessionStringUUID + " not found");
     }
 
 

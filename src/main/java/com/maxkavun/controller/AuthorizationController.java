@@ -2,7 +2,7 @@ package com.maxkavun.controller;
 
 import com.maxkavun.dto.UserLoginDto;
 import com.maxkavun.exception.IncorrectPasswordException;
-import com.maxkavun.exception.UserNotFoundException;
+import com.maxkavun.exception.NotFoundException;
 import com.maxkavun.service.AuthorizationService;
 import com.maxkavun.util.CookieUtil;
 import jakarta.servlet.http.Cookie;
@@ -64,7 +64,7 @@ public class AuthorizationController {
         }catch (IncorrectPasswordException e ){
             bindingResult.rejectValue("password", "password.incorrect" , "Incorrect password");
             return "login";
-        } catch (UserNotFoundException e) {
+        } catch (NotFoundException e) {
             bindingResult.rejectValue("username", "user.not.found" , "User not found");
             return "login";
         }
