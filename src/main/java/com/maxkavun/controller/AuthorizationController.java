@@ -38,7 +38,7 @@ public class AuthorizationController {
     }
 
 
-    @PostMapping("/processingLogin")
+    @PostMapping("/process-login")
     public String processLogin(@Valid @ModelAttribute("userLoginDto") UserLoginDto userLoginDto, BindingResult bindingResult,  HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             return "login";
