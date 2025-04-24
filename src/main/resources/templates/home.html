@@ -17,14 +17,20 @@
 <div class="container-fluid" style="padding-top: 2rem">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <!-- Search -->
-            <form class="d-flex mb-4" th:action="@{/search}" th:object="${cityNameForm}" method="get">
-                <input class="form-control me-2" type="text" th:field="*{cityName}" placeholder="Search for a city"
-                       aria-label="Search">
+
+            <form class="d-flex mb-4 align-items-start" th:action="@{/search}" th:object="${cityNameForm}" method="get">
+                <div class="flex-grow-1 me-2">
+                    <input class="form-control" type="text" th:field="*{cityName}" placeholder="Search for a city"
+                           aria-label="Search">
+
+                    <div th:if="${cityNameError}" class="text-danger mt-1 ms-1" style="font-size: 0.875rem;">
+                        <p class="m-0" th:text="${cityNameError}"></p>
+                    </div>
+                </div>
+
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
 
-            <!-- Cards -->
             <div class="row">
                 <div class="col-md-3 mb-4" th:each="location : ${locations}">
                     <div class="card h-100" style="background-color: rgba(222, 230, 209,170)">
