@@ -24,9 +24,13 @@ import java.util.Optional;
 @Service
 public class OpenWeatherClient {
 
-    public static final String GEO_LOCATIONS_URL = "https://api.openweathermap.org/geo/1.0/direct?q=%s&limit=10&appid=%s";
-    public static final String WEATHER_BY_COORDINATES_URL = "https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&units=metric&appid=%s";
-    public static final int TIMEOUT_SECONDS = 5;
+    private static final int TIMEOUT_SECONDS = 5;
+
+    @Value("${openweather.geo.locations.url}")
+    private String geoLocationsUrl;
+
+    @Value("${openweather.weather.by.coordinates.url}")
+    private String weatherByCoordinatesUrl;
 
     @Value("${openweather.api.key}")
     private String apiKey;
@@ -38,7 +42,7 @@ public class OpenWeatherClient {
     public List<LocationInfoDto> getLocationsByCityName(String cityName){
         try {
             var encodedCityName = URLEncoder.encode(cityName, StandardCharsets.UTF_8);
-            var url = String.format(GEO_LOCATIONS_URL, encodedCityName, apiKey);
+            var url = String.format(geoLocationsUrl, encodedCityName, apiKey);
 
             var request = HttpRequest.newBuilder()
                     .uri(new URI(url))
@@ -55,7 +59,7 @@ public class OpenWeatherClient {
     }
 
     public Optional<LocationWithWeatherDto> getLocationByCoordinates(BigDecimal latitude, BigDecimal longitude){
-        var url = String.format(WEATHER_BY_COORDINATES_URL , latitude, longitude, apiKey);
+        var url = String.format(weatherByCoordinatesUrl , latitude, longitude, apiKey);
         try {
             var request = HttpRequest.newBuilder()
                     .uri(new URI(url))
