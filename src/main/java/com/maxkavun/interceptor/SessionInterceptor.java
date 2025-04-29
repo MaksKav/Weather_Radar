@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.util.Objects;
+
 @RequiredArgsConstructor
 @Component
 public class SessionInterceptor implements HandlerInterceptor {
@@ -20,7 +22,7 @@ public class SessionInterceptor implements HandlerInterceptor {
         var requestUri = request.getRequestURI();
 
         if (sessionId != null && authorizationService.isSessionValid(sessionId) &&
-            (requestUri.equals("/") || requestUri.equals("/registration"))) {
+            (Objects.equals(requestUri,"/") || Objects.equals(requestUri,"/registration"))) {
             response.sendRedirect(request.getContextPath() + "/home");
             return false;
         }
