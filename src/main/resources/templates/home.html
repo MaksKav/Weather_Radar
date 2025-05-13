@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather_Radar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Emilys+Candy&display=swap" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body>
+
+<div th:replace="navbar.html"></div>
+
+<div class="container-fluid" style="padding-top: 2rem">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+
+            <form class="d-flex mb-4 align-items-start" th:action="@{/search}" th:object="${cityNameForm}" method="get">
+                <div class="flex-grow-1 me-2">
+                    <input class="form-control" type="text" th:field="*{cityName}" placeholder="Search for a city"
+                           aria-label="Search">
+
+                    <div th:if="${cityNameError}" class="text-danger mt-1 ms-1" style="font-size: 0.875rem;">
+                        <p class="m-0" th:text="${cityNameError}"></p>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+
+            <div class="row">
+                <div class="col-md-3 mb-4" th:each="location : ${locations}">
+                    <div class="card h-100" style="background-color: rgba(222, 230, 209,170)">
+                        <form th:action="@{/modifyLocation}" method="post">
+                            <input type="hidden" name="action" th:value="'delete'"/>
+                            <input type="hidden" name="cityName" th:value="${location.getName()}"/>
+                            <input type="hidden" name="latitude" th:value="${location.getLatitude()}"/>
+                            <input type="hidden" name="longitude" th:value="${location.getLongitude()}"/>
+                            <div class="d-flex">
+                                <button type="submit" class="btn-close ms-auto" aria-label="Close"></button>
+                            </div>
+                        </form>
+                        <div th:switch="${location.getMainCondition()}">
+                            <img th:case="'Clear'" th:src="@{images/main-weather-status/clear-sky.png}"
+                                 style="width: 40% ; display: block; margin: 0 auto;" class="card-img-top"
+                                 alt="Weather Icon">
+                            <img th:case="'Clouds'" th:src="@{images/main-weather-status/broken-clouds.png}"
+                                 style="width: 40% ; display: block; margin: 0 auto;" class="card-img-top"
+                                 alt="Weather Icon">
+                            <img th:case="'Drizzle'" th:src="@{images/main-weather-status/shower-rain.png}"
+                                 style="width: 40% ; display: block; margin: 0 auto;" class="card-img-top"
+                                 alt="Weather Icon">
+                            <img th:case="'Rain'" th:src="@{images/main-weather-status/rain.png}"
+                                 style="width: 40% ; display: block; margin: 0 auto;" class="card-img-top"
+                                 alt="Weather Icon">
+                            <img th:case="'Snow'" th:src="@{images/main-weather-status/snow.png}"
+                                 style="width: 40% ; display: block; margin: 0 auto;" class="card-img-top"
+                                 alt="Weather Icon">
+                            <img th:case="'Thunderstorm'" th:src="@{images/main-weather-status/thunderstorm.png}"
+                                 style="width: 40% ; display: block; margin: 0 auto;" class="card-img-top"
+                                 alt="Weather Icon">
+                            <img th:case="*" th:src="@{images/main-weather-status/mist.png}"
+                                 style="width: 40% ; display: block; margin: 0 auto;" class="card-img-top"
+                                 alt="Weather Icon">
+
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">
+                            <h2 th:text="${location.getRealTemperature() + '°C'}" style="font-weight: bold"></h2>
+                            <h3 th:text="${location.getName() +', ' + location.getCountryCode()}"
+                                style="font-weight: bold"></h3>
+                            Latitude: <span th:text="${location.getLatitude()}"></span><br>
+                            Longitude: <span th:text="${location.getLongitude()}"></span><br>
+                            Feels like <span
+                                th:text="${location.getTemperatureFeelsLike() + '°C. ' + #strings.capitalize(location.getDescription())}"></span><br>
+                            Humidity: <span th:text="${location.getHumidity()} + '%'"></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

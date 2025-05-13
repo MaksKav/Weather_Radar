@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: weather_radar
+      POSTGRES_USER: LOL
+      POSTGRES_PASSWORD: KEK
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

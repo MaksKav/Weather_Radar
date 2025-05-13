@@ -1,0 +1,22 @@
+.sign_in {
+    font-family: 'Emilys Candy', sans-serif;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.alert {
+    padding: 0 1rem;
+}
+
+.custom_error{
+    font-weight: lighter;
+}
+
